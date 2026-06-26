@@ -1,6 +1,7 @@
 import torch
 import torch.utils.data as util
 from torchvision import datasets
+from modelling.util.types import LoaderTrio
 
 # The dataset is a balanced set of good and tires, around 1000 images each
 # https://www.kaggle.com/datasets/warcoder/tyre-quality-classification
@@ -20,4 +21,4 @@ def get_data():
     val_loader = util.DataLoader(val, batch_size=BATCH_SIZE, shuffle=True)
     ts_loader = util.DataLoader(test, batch_size=BATCH_SIZE, shuffle=True)
 
-    return tr_loader, val_loader, ts_loader
+    return LoaderTrio(tr_loader, val_loader, ts_loader)

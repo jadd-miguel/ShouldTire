@@ -1,28 +1,30 @@
 import torch.nn as nn
 import torch.optim as optim
-from get_data import get_data
-from preprocess import preprocess
-from model import get_model
-from train import train
-from test import test_model
+from modelling import get_data, preprocess, model, train, test
 
 def main():
-    tr_loader, val_loader, ts_loader = get_data()
-    tr_loader, val_loader, ts_loader = preprocess(tr_loader, val_loader, ts_loader)
+    print("get_data")
+    loaders = get_data.get_data()
 
-    model = get_model()
-    optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)
+    print("preprocess_data")
+    preprocess.preprocess_data(loaders)
+
+    print("get_model")
+    _model = model.get_model()
+    optimizer = optim.Adam(_model.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss()
 
-    train_loss, train_accuracy, val_loss, val_accuracy = train(
-        tr_loader,
-        val_loader,
-        model,
+    print("train_model")
+    trainHist = train.train_model(
+        loaders,
+        _model,
         optimizer,
         criterion
     )
 
-    test_model(train_loss, train_accuracy, val_loss, val_accuracy, model, ts_loader)
+    print("test_model")
+    scores = test.test_model(trainHist, _model, loaders)
+    output = scores + trainHist.get_output()
 
 if __name__ == "__main__":
     main()

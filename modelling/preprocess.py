@@ -22,9 +22,7 @@ VAL_TS_TRANSFORM = transforms.Compose([
     )
 ])
 
-def preprocess(tr_loader, val_loader, ts_loader):
-    tr_loader.dataset.dataset.transform = TR_TRANSFORM
-    val_loader.dataset.dataset.transform = VAL_TS_TRANSFORM
-    ts_loader.dataset.dataset.transform = VAL_TS_TRANSFORM
-
-    return tr_loader, val_loader, ts_loader
+def preprocess_data(pre_loaders):
+    pre_loaders.get_tr_loader().dataset.dataset.transform = TR_TRANSFORM
+    pre_loaders.get_val_loader().dataset.dataset.transform = VAL_TS_TRANSFORM
+    pre_loaders.get_ts_loader().dataset.dataset.transform = VAL_TS_TRANSFORM
