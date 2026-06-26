@@ -1,6 +1,8 @@
 import torch.nn as nn
 import torch.optim as optim
 from modelling import get_data, preprocess, model, train, test
+import dash
+from interface import get_layout
 
 def main():
     print("get_data")
@@ -26,5 +28,11 @@ def main():
     scores = test.test_model(trainHist, _model, loaders)
     output = scores + trainHist.get_output()
 
+def run_interface():
+    app = dash.Dash(__name__)
+    app.layout = get_layout()
+    app.run(port=8050, debug=True)
+
 if __name__ == "__main__":
-    main()
+    #main()
+    run_interface()
