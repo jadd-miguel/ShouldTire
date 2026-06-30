@@ -1,10 +1,13 @@
+import torch
 import torch.nn as nn
 import torch.optim as optim
+from util import get_device
 from modelling import get_data, preprocess, model, train, test
 import dash
 from interface import get_layout
+from pathlib import Path
 
-def main():
+def create_model():
     print("get_data")
     loaders = get_data.get_data()
 
@@ -23,16 +26,31 @@ def main():
         optimizer,
         criterion
     )
-
     print("test_model")
     scores = test.test_model(trainHist, _model, loaders)
+
+    torch.save(_model.state_dict(), "model/model.pth")
     output = scores + trainHist.get_output()
 
-def run_interface():
+    with open("assets/output.txt", "w") as f:
+        f.write(output)
+
+def run_app(_model):
     app = dash.Dash(__name__)
-    app.layout = get_layout()
+    app.layout = get_layout(app, _model)
     app.run(port=8050, debug=True)
 
 if __name__ == "__main__":
-    #main()
-    run_interface()
+
+    weights = Path("model/model.pth")
+    _model = model.get_model()
+
+    if not weights.is_file():
+        create_model()
+
+    _model.load_state_dict(
+        torch.load(weights, map_location=get_device())
+    )
+    _model.to(get_device())
+    _model.eval()
+    run_app(_model)

@@ -1,9 +1,8 @@
 import torch
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
-
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
+from util import get_device
 
 def test_model(trainHistory, model, loader):
 
@@ -40,7 +39,7 @@ def test_model(trainHistory, model, loader):
         y_pred = []
         for _, batch in enumerate(loader.get_ts_loader()):
 
-            inputs, labels = (batch[0].to(DEVICE), batch[1].to(DEVICE))
+            inputs, labels = (batch[0].to(get_device()), batch[1].to(get_device()))
             y_true.extend(labels.detach().cpu().numpy())
 
             output = model(inputs)
@@ -50,14 +49,14 @@ def test_model(trainHistory, model, loader):
         accuracy = accuracy_score(y_true, y_pred)
         precision = precision_score(y_true, y_pred)
         recall = recall_score(y_true, y_pred)
-        f1_score = f1_score(y_true, y_pred)
+        f1_score = 2 * (precision * recall) / (precision + recall)
 
         final_output = f'''
-            ACCURACY IS:  {accuracy}
-            PRECISION IS: {precision}
-            RECALL IS:    {recall}
-            F1 Score IS:  {f1_score}
-            '''
+ACCURACY IS:  {accuracy}
+PRECISION IS: {precision}
+RECALL IS:    {recall}
+F1 Score IS:  {f1_score}
+'''
 
         print_conf_matrix(y_true, y_pred)
         return final_output

@@ -1,8 +1,6 @@
-import torch
 import torch.nn as nn
 from torchvision import models
-
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+from util import get_device
 
 def get_model():
 
@@ -14,6 +12,6 @@ def get_model():
     NUM_OF_CLASSES = 2
     num_ftrs = resnet50.fc.in_features
     resnet50.fc = nn.Linear(num_ftrs, NUM_OF_CLASSES)
-    resnet50 = resnet50.to(DEVICE)
+    resnet50 = resnet50.to(get_device())
 
     return resnet50

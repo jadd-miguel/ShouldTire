@@ -1,10 +1,9 @@
 import torch
 from modelling.util.types import TrainingHistory
-
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+from util import get_device
 
 def train_model(loader, model, optimizer, criterion):
-    EPOCHS = 4
+    EPOCHS = 3
 
     output = ""
     tr_loss = []
@@ -16,7 +15,7 @@ def train_model(loader, model, optimizer, criterion):
 
         for i, batch in enumerate(loader.get_tr_loader()):
 
-            inputs, labels = (batch[0].to(DEVICE), batch[1].to(DEVICE))
+            inputs, labels = (batch[0].to(get_device()), batch[1].to(get_device()))
             optimizer.zero_grad()
 
             outputs = model(inputs)
@@ -38,7 +37,7 @@ def train_model(loader, model, optimizer, criterion):
         model.eval()
         for i, batch in enumerate(loader.get_val_loader()):
 
-            inputs, labels = (batch[0].to(DEVICE), batch[1].to(DEVICE))
+            inputs, labels = (batch[0].to(get_device()), batch[1].to(get_device()))
 
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -48,7 +47,7 @@ def train_model(loader, model, optimizer, criterion):
             accuracy = torch.sum(preds == labels.data).item() / len(labels)
             val_acc.append(accuracy)
 
-            if i % 25 == 0:
+            if i % 10 == 0:
                 log = f"(VAL)   EPOCH-{epoch} | ITER-{i} | LOSS-{round(loss.item(), 5)} | ACC-{round(accuracy, 5)}"
                 output += f"{log}\n"
                 print(log)

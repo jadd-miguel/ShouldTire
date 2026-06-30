@@ -24,6 +24,24 @@ ShouldTire_ENV\Scripts\Activate.ps1 // powershell
 6. Server is ready
 `http://127.0.0.1:8050/`
 
+*Docker*
+1. Make sure you have [Docker ↗](https://docs.docker.com/desktop/setup/install/windows-install/).
+2. Build container
+`docker compose up --build -d`
+3. Server is ready
+`http://localhost:8000/`
+4. To kill docker build
+`docker compose down`
+
 ## Stack
 Frontend -> Dash<br>
 Backend -> Python<br>
+Cloud -> Render<br>
+Container -> Docker<br>
+CI/CD -> GitHub<br>
+&emsp;- ✔ Env, ✔ Dependencies, ✔ Syntax, ✔ Docker, ✔ Deploy
+
+# Possible Features in the Future
+- Explanation of weardown (Area of Wear Highlight, LLM Advice)
+- Analysis of CNN weights for pattern finding
+- Model customization
