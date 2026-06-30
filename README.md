@@ -41,7 +41,7 @@ Container -> Docker<br>
 CI/CD -> GitHub<br>
 &emsp;- ✔ Env, ✔ Dependencies, ✔ Syntax, ✔ Docker, ✔ Deploy
 
-# Possible Features in the Future
+## Possible Features in the Future
 - Explanation of weardown (Area of Wear Highlight, LLM Advice)
 - Analysis of CNN weights for pattern finding
 - Model customization

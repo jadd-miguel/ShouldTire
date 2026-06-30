@@ -38,7 +38,7 @@ def create_model():
 def run_app(_model):
     app = dash.Dash(__name__)
     app.layout = get_layout(app, _model)
-    app.run(port=8050, debug=True)
+    app.run(host="0.0.0.0", port=8050, debug=False)
 
 if __name__ == "__main__":
 
